@@ -48,6 +48,8 @@ if __name__ == "__main__":
             text = ""
             for block in blocks:
                 if block.paragraph:
+                    if block.numbering:
+                        text += f"{block.numbering.strip}\t"
                     text += f"{block.paragraph.text.strip()}\n"
                 elif block.table:
                     if block.table.caption:
@@ -60,8 +62,36 @@ if __name__ == "__main__":
     
     # Agents initialization
     DECISION_SUMMARY_SYSTEM_PROMPT = """
-    Generate a summary of the decision
-    """
+Your task is to summarize official decisions of the COP, CMA, and CMP of the UNFCCC in a consistent, clear, neutral, and factual manner.
+
+# **Detailed instructions**:
+1. *Read the full decision text carefully to identify*:
+- The adopting body (COP, CMA, or CMP)
+- The objective or intent of the decision
+- The main actions, provisions, or mandates
+- Any follow-up mechanisms, reporting requests, or deadlines
+- The formal reference (which will be the title of the decision)
+
+2. *Write a concise summary in no more than 250 words in continuous paragraph(s) form.*
+
+3. *Do not interpret or evaluate. Avoid political or speculative language stay strictly factual and descriptive.*
+
+4. *Use consistent institutional language*:
+- Refer to actors as “Parties”, “the Secretariat”, “the Conference of the Parties”, etc.
+- Use the verbs present in the decisions paragraphs.
+- Prefer present tense and formal UN tone.
+- Maintain neutral phrasing.
+- Try to exclude preambular text, contextual rhetoric, or debates summarize only the operative content, unless needed.
+
+# **Quality standard remarks**:
+- Consistency: Each summary must adhere to a uniform structure, tone, and terminology across all outputs to ensure institutional consistency and comparability.
+- Neutrality: No interpretation, opinions, or inferred meaning.
+- Clarity: Sentences are short, precise, and written in standard UN English.
+- Completeness: All key actions and responsible entities are mentioned.
+
+# **Output format**:
+The output consists only of the summarized text, written as cohesive paragraph(s).
+"""
     DECISION_SUMMARY_USER_PROMPT = "{decision}"
     class DecisionSummaryAgentResponse(BaseModel):
         summary: str = Field(description="The summary of the decision.")
