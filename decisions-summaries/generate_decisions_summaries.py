@@ -54,23 +54,26 @@ if __name__ == "__main__":
             
             decisions[decision.symbol] = text
     
-    # # -- Get the decisions summaries --
+    # -- Get the decisions summaries --
     
-    # # Agents initialization
-    
-    # class DecisionSummaryAgentResponse(BaseModel):
-    #     summary: str = Field(description="The summary of the decision.")
-    # DECISION_SUMMARY_SYSTEM_PROMPT = """
-    # """
-    # DECISION_SUMMARY_USER_PROMPT = "{decision}"
+    # Agents initialization
+    DECISION_SUMMARY_SYSTEM_PROMPT = """
+    Generate a summary of the decision
+    """
+    DECISION_SUMMARY_USER_PROMPT = "{decision}"
+    class DecisionSummaryAgentResponse(BaseModel):
+        summary: str = Field(description="The summary of the decision.")
 
-    # decision_summary_agent: Runnable = ChatOpenAI(model="gpt-5-mini", temperature=0.0).with_structured_output(DecisionSummaryAgentResponse)
-    # decision_summary_agent_message: ChatPromptTemplate = ChatPromptTemplate(
-    #     messages=[("system", DECISION_SUMMARY_SYSTEM_PROMPT), ("user", DECISION_SUMMARY_USER_PROMPT)]
-    # )
+    decision_summary_agent: Runnable = ChatOpenAI(model="gpt-5-mini", temperature=0.0).with_structured_output(DecisionSummaryAgentResponse)
+    decision_summary_agent_message: ChatPromptTemplate = ChatPromptTemplate(
+        messages=[("system", DECISION_SUMMARY_SYSTEM_PROMPT), ("user", DECISION_SUMMARY_USER_PROMPT)]
+    )
     
-    # # Call the agents to get the decision summaries
-    # cost = 0.0
-    # with get_openai_callback() as cb:
-    #     responses_decision_summary: list[DecisionSummaryAgentResponse] = decision_summary_agent.batch(messages)
-    #     cost += cb.total_cost
+    # Call the agents to get the decision summaries
+    for decision_symbol, decision_text in decisions.items():
+        cost = 0.0
+        with get_openai_callback() as cb:
+            responses_decision_summary: list[DecisionSummaryAgentResponse] = decision_summary_agent.batch(messages)
+            cost += cb.total_cost
+            print(responses_decision_summary)
+        break
