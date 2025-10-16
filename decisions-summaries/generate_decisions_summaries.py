@@ -81,6 +81,7 @@ if __name__ == "__main__":
     with get_openai_callback() as cb:
         responses_decision_summary: list[DecisionSummaryAgentResponse] = decision_summary_agent.batch(messages)
         cost += cb.total_cost
+        print("Generated summaries", f"{cost=}")
     
     results = []
     for i, (decision_symbol, _) in enumerate(decisions.items()):
@@ -88,6 +89,7 @@ if __name__ == "__main__":
             "symbol": decision_symbol,
             "summary": responses_decision_summary[i].summary.strip()
         })
+        if i+1 < len(responses_decision_summary): break
     
     df = pd.DataFrame(results)
     df.to_csv("decision_summaries.csv", encoding="utf-8")
