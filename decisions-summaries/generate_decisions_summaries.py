@@ -20,22 +20,35 @@ from langchain_community.callbacks.manager import get_openai_callback
 from langchain.prompts import ChatPromptTemplate
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 from init_db import engine
-from data_models.document_organizational_representation import Document
-from data_models.document_specific_representation import Decision
+from data_models.document_core_representation import Block
+from data_models.document_specific_representation import Decision, DecisionBlockMap
 
 if __name__ == "__main__":
-    with Session(engine) as session:
-        rows = session.execute(
-            select(Decision, Document)
-            .join(Decision.document)
-        )
-        for decision, document in rows:
-            print(f"{decision.symbol} [{decision.id}] ({document.symbol} [{document.id}])")
-    
     # -- Get the decision documents --
+
+    with Session(engine) as session:
+        decisions = session.execute(
+            select(Decision)
+            .options(
+                selectinload(Decision.decision_blocks_map).selectinload(DecisionBlockMap.block).selectinload(Block.paragraph),
+                selectinload(Decision.decision_blocks_map).selectinload(DecisionBlockMap.block).selectinload(Block.Table),
+            )
+        )
+
+        for decision in decisions:
+            print(f"{decision.symbol} [{decision.id}]")
+            blocks = [decision_block_map.block for decision_block_map in decision.decision_blocks_map]
+            for block in blocks:
+                if block.paragraph:
+                    print(block.paragraph.text)
+                elif block.table:
+                    print(block.table.cells_text)
+                    if block.table.caption:
+                        print(block.table.caption)
+
 
     #
 
