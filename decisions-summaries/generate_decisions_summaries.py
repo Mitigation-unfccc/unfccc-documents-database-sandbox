@@ -19,12 +19,21 @@ from langchain_openai import ChatOpenAI
 from langchain_community.callbacks.manager import get_openai_callback
 from langchain.prompts import ChatPromptTemplate
 
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
-
-
+from init_db import engine
+from data_models.document_organizational_representation import Document
+from data_models.document_specific_representation import Decision
 
 if __name__ == "__main__":
-    print("imports work")
+    with Session(engine) as session:
+        rows = session.execute(
+            select(Decision, Document)
+            .join(Decision.document)
+        )
+        for decision, document in rows:
+            print(f"{decision.symbol} [{decision.id}] ({document.symbol} [{document.id}])")
     
     # -- Get the decision documents --
 
