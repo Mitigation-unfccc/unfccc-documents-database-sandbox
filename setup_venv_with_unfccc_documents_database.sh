@@ -15,5 +15,6 @@ source ".venv/bin/activate"
 # Install the unfccc documents database package in editiable mode
 echo "Installing unfccc-documents-database from $UNFCCC_DOCUMENTS_DATABASE_PATH in editable mode..."
 pip install -e "$UNFCCC_DOCUMENTS_DATABASE_PATH"
+pip install -r "$UNFCCC_DOCUMENTS_DATABASE_PATH/requirements.txt"
 
 echo "Setup complete: python virtual environment ready with unfccc-documents-database package installed."
