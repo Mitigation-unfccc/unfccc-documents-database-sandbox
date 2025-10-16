@@ -23,8 +23,6 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
 from init_db import engine
-import logging
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 from data_models.document_core_representation import Block
 from data_models.document_specific_representation import Decision, DecisionBlockMap
