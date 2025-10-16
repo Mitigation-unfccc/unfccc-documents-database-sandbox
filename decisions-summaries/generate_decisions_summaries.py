@@ -81,7 +81,6 @@ if __name__ == "__main__":
     with get_openai_callback() as cb:
         responses_decision_summary: list[DecisionSummaryAgentResponse] = decision_summary_agent.batch(messages)
         cost += cb.total_cost
-        print(responses_decision_summary)
     
     results = []
     for i, (decision_symbol, _) in enumerate(decisions.items()):
