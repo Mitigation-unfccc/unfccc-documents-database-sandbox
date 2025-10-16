@@ -70,10 +70,14 @@ if __name__ == "__main__":
     )
     
     # Call the agents to get the decision summaries
+    messages = []
     for decision_symbol, decision_text in decisions.items():
-        cost = 0.0
-        with get_openai_callback() as cb:
-            responses_decision_summary: list[DecisionSummaryAgentResponse] = decision_summary_agent.batch(messages)
-            cost += cb.total_cost
-            print(responses_decision_summary)
+        messages.append(decision_summary_agent_message.format_messages(decision=decision_text))
         break
+    
+    cost = 0.0
+    with get_openai_callback() as cb:
+        responses_decision_summary: list[DecisionSummaryAgentResponse] = decision_summary_agent.batch(messages)
+        cost += cb.total_cost
+        print(responses_decision_summary)
+        
