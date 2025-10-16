@@ -34,7 +34,7 @@ if __name__ == "__main__":
             select(Decision)
             .options(
                 selectinload(Decision.decision_blocks_map).selectinload(DecisionBlockMap.block).selectinload(Block.paragraph),
-                selectinload(Decision.decision_blocks_map).selectinload(DecisionBlockMap.block).selectinload(Block.Table),
+                selectinload(Decision.decision_blocks_map).selectinload(DecisionBlockMap.block).selectinload(Block.table),
             )
         )
 
