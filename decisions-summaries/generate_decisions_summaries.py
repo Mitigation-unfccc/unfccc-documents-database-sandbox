@@ -36,7 +36,7 @@ if __name__ == "__main__":
                 selectinload(Decision.decision_blocks_map).selectinload(DecisionBlockMap.block).selectinload(Block.paragraph),
                 selectinload(Decision.decision_blocks_map).selectinload(DecisionBlockMap.block).selectinload(Block.table),
             )
-        )
+        ).scalars().all()
 
         for decision in decisions:
             print(f"{decision.symbol} [{decision.id}]")
