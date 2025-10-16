@@ -24,6 +24,7 @@ from langchain.prompts import ChatPromptTemplate
 
 
 if __name__ == "__main__":
+    print("imports work")
     
     # -- Get the decision documents --
 
