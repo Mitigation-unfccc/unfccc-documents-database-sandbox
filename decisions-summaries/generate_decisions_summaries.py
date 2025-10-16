@@ -43,11 +43,12 @@ if __name__ == "__main__":
             blocks = [decision_block_map.block for decision_block_map in decision.decision_blocks_map]
             for block in blocks:
                 if block.paragraph:
-                    print(block.paragraph.text)
+                    print(block.paragraph.text.strip())
                 elif block.table:
-                    print(block.table.cells_text)
                     if block.table.caption:
-                        print(block.table.caption)
+                        print(block.table.caption.strip())
+                    print(block.table.cells_text)
+                    
 
 
     #
