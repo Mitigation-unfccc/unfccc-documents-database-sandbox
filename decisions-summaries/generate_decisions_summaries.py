@@ -30,8 +30,9 @@ from data_models.document_specific_representation import Decision, DecisionBlock
 if __name__ == "__main__":
     # -- Get the decision documents --
 
+    decisions = {}
     with Session(engine) as session:
-        decisions = session.execute(
+        rows = session.execute(
             select(Decision)
             .options(
                 selectinload(Decision.decision_blocks_map).selectinload(DecisionBlockMap.block).selectinload(Block.paragraph),
@@ -39,21 +40,19 @@ if __name__ == "__main__":
             )
         ).scalars().all()
 
-        for decision in decisions:
+        for decision in rows:
             print(f"{decision.symbol} [{decision.id}]")
             blocks = [decision_block_map.block for decision_block_map in decision.decision_blocks_map]
+            text = ""
             for block in blocks:
                 if block.paragraph:
-                    print(block.paragraph.text.strip())
+                    text += f"{block.paragraph.text.strip()}\n"
                 elif block.table:
                     if block.table.caption:
-                        print(block.table.caption.strip())
-                    print(block.table.cells_text)
-                    
-
-
-    #
-
+                        text += f"{block.table.caption.strip()}\n"
+                    text += f"{block.table.cells_text}\n"
+            
+            decisions[decision.symbol] = text
     
     # # -- Get the decisions summaries --
     
