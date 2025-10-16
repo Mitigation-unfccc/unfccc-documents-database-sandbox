@@ -27,6 +27,8 @@ from init_db import engine
 from data_models.document_core_representation import Block
 from data_models.document_specific_representation import Decision, DecisionBlockMap
 
+import pandas as pd
+
 if __name__ == "__main__":
     # -- Get the decision documents --
 
@@ -74,10 +76,20 @@ if __name__ == "__main__":
     for decision_symbol, decision_text in decisions.items():
         messages.append(decision_summary_agent_message.format_messages(decision=decision_text))
         break
-    
+
     cost = 0.0
     with get_openai_callback() as cb:
         responses_decision_summary: list[DecisionSummaryAgentResponse] = decision_summary_agent.batch(messages)
         cost += cb.total_cost
         print(responses_decision_summary)
+    
+    results = []
+    for i, (decision_symbol, _) in enumerate(decisions.items()):
+        results.append({
+            "symbol": decision_symbol,
+            "summary": responses_decision_summary[i].summary.strip()
+        })
+    
+    df = pd.DataFrame(results)
+    df.to_csv("decision_summaries.csv", encoding="utf-8")
         
