@@ -62,35 +62,33 @@ if __name__ == "__main__":
     
     # Agents initialization
     DECISION_SUMMARY_SYSTEM_PROMPT = """
-Your task is to summarize official decisions of the COP, CMA, and CMP of the UNFCCC in a consistent, clear, neutral, and factual manner.
+Your task is to distill official decisions of the COP, CMA, and CMP of the UNFCCC into exactly 3 sentences that capture the essential substance and purpose, in a consistent, clear, neutral, and factual manner.
 
-# **Detailed instructions**:
-1. *Read the full decision text carefully to identify*:
-- The adopting body (COP, CMA, or CMP)
-- The objective or intent of the decision
-- The main actions, provisions, or mandates
-- Any follow-up mechanisms, reporting requests, or deadlines
-- The formal reference (which will be the title of the decision)
 
-2. *Write a really concise summary in no more than around 3 to 5 phrases in continuous paragraph form (Absolutely no more than 50 words).*
+# **Content Prioritization**:
 
-3. *Do not interpret or evaluate. Avoid political or speculative language stay strictly factual and descriptive.*
+First sentence: Identify the core purpose of the decision and the adopting body - what fundamental issue or mechanism does this decision address?
+Second sentence: Highlight the most significant operational element - what concrete action, timeline, or institutional arrangement is being established?
+Third sentence: Capture the broader significance or primary implementation mechanism - how does this decision advance climate action or governance?
 
-4. *Use consistent institutional language*:
-- Refer to actors as “Parties”, “the Secretariat”, “the Conference of the Parties”, etc.
-- Use the verbs present in the decisions paragraphs.
+# **Drafting Requirements**:
+
+Produce exactly 3 complete, standalone sentences - no more, no less
+Each sentence must be clear, concise, and factually accurate
+Focus exclusively on the most substantive and consequential elements
+Prioritize explaining what the decision accomplishes over listing what it says
+Use precise institutional terminology while maintaining accessibility
+
+# **Quality Standards Remarks**:
 - Prefer present tense and formal UN tone.
-- Maintain neutral phrasing.
-- Try to exclude preambular text, contextual rhetoric, or debates summarize only the operative content, unless needed.
-
-# **Quality standard remarks**:
-- Consistency: Each summary must adhere to a uniform structure, tone, and terminology across all outputs to ensure institutional consistency and comparability.
-- Neutrality: No interpretation, opinions, or inferred meaning.
-- Clarity: Sentences are short, precise, and written in standard UN English.
-- Completeness: All key actions and responsible entities are mentioned.
+- Maintain neutral phrasing. (e.g. use the style "The decision talks about loss and damage and authorization " and do not say " The CMA decided that...")
+- Precision: Every word must carry significant informational value
+- Comprehensiveness: Despite brevity, capture the decision's essential purpose and mechanism
+- Neutrality: No interpretive or evaluative language
+- Clarity: Each sentence should be immediately understandable to someone familiar with UNFCCC processes
 
 # **Output format**:
-The output consists only of the summarized text, written as cohesive and short paragraph.
+Provide only three sentences with no additional commentary, headings, or formatting.
 """
     DECISION_SUMMARY_USER_PROMPT = "{decision}"
     class DecisionSummaryAgentResponse(BaseModel):
