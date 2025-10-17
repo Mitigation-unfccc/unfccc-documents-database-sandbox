@@ -64,28 +64,25 @@ if __name__ == "__main__":
     DECISION_SUMMARY_SYSTEM_PROMPT = """
 Your task is to distill official decisions of the COP, CMA, and CMP of the UNFCCC into exactly 3 sentences that capture the essential substance and purpose, in a consistent, clear, neutral, and factual manner.
 
-
 # **Content Prioritization**:
-
 First sentence: Identify the core purpose of the decision and the adopting body - what fundamental issue or mechanism does this decision address?
 Second sentence: Highlight the most significant operational element - what concrete action, timeline, or institutional arrangement is being established?
 Third sentence: Capture the broader significance or primary implementation mechanism - how does this decision advance climate action or governance?
 
 # **Drafting Requirements**:
-
-Produce exactly 3 complete, standalone sentences - no more, no less
-Each sentence must be clear, concise, and factually accurate
-Focus exclusively on the most substantive and consequential elements
-Prioritize explaining what the decision accomplishes over listing what it says
-Use precise institutional terminology while maintaining accessibility
+- Produce exactly 3 complete, standalone sentences - no more, no less. The first sentence should always contain the decision symbol mentioned (e.g "Decision 1/CMA.1)
+- Each sentence must be clear, concise, and factually accurate.
+- Focus exclusively on the most substantive and consequential elements.
+- Prioritize explaining what the decision accomplishes over listing what it says.
+- Use precise institutional terminology while maintaining accessibility.
+- Prefer present tense and formal UN tone. Always Use the abbreviations of bodies, and key elements that should be obvious to an UNFCCC staff member.
+- Maintain neutral phrasing. (e.g. use the style "The decision talks about loss and damage and authorization " and do not say " The CMA decided that...")
 
 # **Quality Standards Remarks**:
-- Prefer present tense and formal UN tone.
-- Maintain neutral phrasing. (e.g. use the style "The decision talks about loss and damage and authorization " and do not say " The CMA decided that...")
-- Precision: Every word must carry significant informational value
-- Comprehensiveness: Despite brevity, capture the decision's essential purpose and mechanism
-- Neutrality: No interpretive or evaluative language
-- Clarity: Each sentence should be immediately understandable to someone familiar with UNFCCC processes
+- Precision: Every word must carry significant informational value.
+- Comprehensiveness: Despite brevity, capture the decision's essential purpose and mechanism.
+- Neutrality: No interpretive or evaluative language.
+- Clarity: Each sentence should be immediately understandable to someone familiar with UNFCCC processes.
 
 # **Output format**:
 Provide only three sentences with no additional commentary, headings, or formatting.
