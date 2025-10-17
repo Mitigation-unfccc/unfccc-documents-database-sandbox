@@ -75,7 +75,7 @@ Third sentence: Capture the broader significance or primary implementation mecha
 - Focus exclusively on the most substantive and consequential elements.
 - Prioritize explaining what the decision accomplishes over listing what it says.
 - Use precise institutional terminology while maintaining accessibility.
-- Prefer present tense and formal UN tone. Always Use the abbreviations of bodies, and key elements that should be obvious to an UNFCCC staff member.
+- Prefer present tense and formal UN tone. Always try to use the acronyms of bodies that should be obvious to an UNFCCC staff member (to save up output length).
 - Maintain neutral phrasing. (e.g. use the style "The decision talks about loss and damage and authorization " and do not say " The CMA decided that...")
 
 # **Quality Standards Remarks**:
