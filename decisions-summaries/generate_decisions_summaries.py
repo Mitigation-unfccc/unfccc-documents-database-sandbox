@@ -72,7 +72,7 @@ Your task is to summarize official decisions of the COP, CMA, and CMP of the UNF
 - Any follow-up mechanisms, reporting requests, or deadlines
 - The formal reference (which will be the title of the decision)
 
-2. *Write a concise summary in no more than 200 words in continuous paragraph(s) form.*
+2. *Write a really concise summary in no more than around 3 to 5 phrases in continuous paragraph form (Absolutely no more than 50 words).*
 
 3. *Do not interpret or evaluate. Avoid political or speculative language stay strictly factual and descriptive.*
 
@@ -90,7 +90,7 @@ Your task is to summarize official decisions of the COP, CMA, and CMP of the UNF
 - Completeness: All key actions and responsible entities are mentioned.
 
 # **Output format**:
-The output consists only of the summarized text, written as cohesive paragraph(s) (split into a second paragraph only if absolutely necessary for readability).
+The output consists only of the summarized text, written as cohesive and short paragraph.
 """
     DECISION_SUMMARY_USER_PROMPT = "{decision}"
     class DecisionSummaryAgentResponse(BaseModel):
