@@ -65,4 +65,64 @@ if __name__ == "__main__":
             
             conclusions[conclusion.symbol] = text
     
-    print(conclusions["FCCC/SBSTA/2024/7"])
+    # -- Get the conclusions summaries --
+    
+    # Agents initialization
+    CONCLUSION_SUMMARY_SYSTEM_PROMPT = """
+Your task is to distill official conclusions of the SBI and SBSTA of the UNFCCC into exactly 3 sentences that capture the essential substance and purpose, in a consistent, clear, neutral, and factual manner.
+
+# **Content Prioritization**:
+First sentence: Identify the core purpose of the conclusion and the adopting body - what fundamental issue or mechanism does this conclusion address?
+Second sentence: Highlight the most significant operational element - what concrete action, timeline, or institutional arrangement is being established?
+Third sentence: Capture the broader significance or primary implementation mechanism - how does this conclusion advance climate action or governance?
+
+# **Drafting Requirements**:
+- Produce exactly 3 complete, standalone sentences - no more, no less. The first sentence should always contain the conclusion symbol mentioned (e.g "Conclusion FCCC/SBSTA/2024/7")
+- Each sentence must be clear, concise, and factually accurate.
+- Focus exclusively on the most substantive and consequential elements.
+- Prioritize explaining what the conclusion accomplishes over listing what it says.
+- Use precise institutional terminology while maintaining accessibility.
+- Prefer present tense and formal UN tone.
+- Always use the abbreviations of bodies only (even the first time they appear, to save up output length, e.g. instead of "Conference of the Parties" use just "COP").
+- Maintain neutral phrasing. (e.g. use the style "The conclusion talks about loss and damage and authorization " and do not say " The CMA decided that...")
+
+# **Quality Standards Remarks**:
+- Precision: Every word must carry significant informational value.
+- Comprehensiveness: Despite brevity, capture the conclusion's essential purpose and mechanism.
+- Neutrality: No interpretive or evaluative language.
+- Clarity: Each sentence should be immediately understandable to someone familiar with UNFCCC processes.
+
+# **Output format**:
+Provide only three sentences with no additional commentary, headings, or formatting.
+"""
+    CONCLUSION_SUMMARY_USER_PROMPT = "{conclusion}"
+    class ConclusionSummaryAgentResponse(BaseModel):
+        summary: str = Field(description="The summary of the conclusion.")
+
+    conclusion_summary_agent: Runnable = ChatOpenAI(model="gpt-5-mini", temperature=0.0).with_structured_output(ConclusionSummaryAgentResponse)
+    conclusion_summary_agent_message: ChatPromptTemplate = ChatPromptTemplate(
+        messages=[("system", CONCLUSION_SUMMARY_SYSTEM_PROMPT), ("user", CONCLUSION_SUMMARY_USER_PROMPT)]
+    )
+    
+    # Call the agents to get the conclusion summaries
+    messages = []
+    for conclusion_symbol, conclusion_text in conclusions.items():
+        messages.append(conclusion_summary_agent_message.format_messages(conclusion=f"{conclusion_symbol}\n{conclusion_text}"))
+        break
+
+    cost = 0.0
+    with get_openai_callback() as cb:
+        responses_conclusion_summary: list[ConclusionSummaryAgentResponse] = conclusion_summary_agent.batch(messages)
+        cost += cb.total_cost
+        print("Summaries generated", f"{cost=}")
+    
+    results = []
+    for i, (conclusion_symbol, _) in enumerate(conclusions.items()):
+        results.append({
+            "symbol": conclusion_symbol,
+            "summary": responses_conclusion_summary[i].summary.strip()
+        })
+        if i+1 >= len(responses_conclusion_summary): break # Just for when we want to run a subset
+    
+    df = pd.DataFrame(results)
+    df.to_csv("conclusion_summaries.csv", encoding="utf-8")

@@ -76,7 +76,7 @@ Third sentence: Capture the broader significance or primary implementation mecha
 - Prioritize explaining what the decision accomplishes over listing what it says.
 - Use precise institutional terminology while maintaining accessibility.
 - Prefer present tense and formal UN tone.
-- Always use the aabbreviations of bodies only (even the first time they appear, to save up output length, e.g. instead of "Conference of the Parties" use just "COP").
+- Always use the abbreviations of bodies only (even the first time they appear, to save up output length, e.g. instead of "Conference of the Parties" use just "COP").
 - Maintain neutral phrasing. (e.g. use the style "The decision talks about loss and damage and authorization " and do not say " The CMA decided that...")
 
 # **Quality Standards Remarks**:
