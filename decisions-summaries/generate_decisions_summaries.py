@@ -75,7 +75,8 @@ Third sentence: Capture the broader significance or primary implementation mecha
 - Focus exclusively on the most substantive and consequential elements.
 - Prioritize explaining what the decision accomplishes over listing what it says.
 - Use precise institutional terminology while maintaining accessibility.
-- Prefer present tense and formal UN tone. Always Use the abbreviations of bodies, and key elements that should be obvious to an UNFCCC staff member.
+- Prefer present tense and formal UN tone.
+- Always use the aabbreviations of bodies only (even the first time they appear, to save up output length, e.g. instead of "Conference of the Parties" use just "COP").
 - Maintain neutral phrasing. (e.g. use the style "The decision talks about loss and damage and authorization " and do not say " The CMA decided that...")
 
 # **Quality Standards Remarks**:
@@ -100,7 +101,6 @@ Provide only three sentences with no additional commentary, headings, or formatt
     messages = []
     for decision_symbol, decision_text in decisions.items():
         messages.append(decision_summary_agent_message.format_messages(decision=decision_text))
-        break
 
     cost = 0.0
     with get_openai_callback() as cb:
@@ -114,7 +114,7 @@ Provide only three sentences with no additional commentary, headings, or formatt
             "symbol": decision_symbol,
             "summary": responses_decision_summary[i].summary.strip()
         })
-        if i+1 >= len(responses_decision_summary): break
+        if i+1 >= len(responses_decision_summary): break # Just for when we want to run a subset
     
     df = pd.DataFrame(results)
     df.to_csv("decision_summaries.csv", encoding="utf-8")
