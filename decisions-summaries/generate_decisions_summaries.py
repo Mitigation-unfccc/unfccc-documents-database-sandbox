@@ -49,7 +49,7 @@ if __name__ == "__main__":
             for block in blocks:
                 if block.paragraph:
                     if block.numbering:
-                        text += f"{block.numbering.strip}\t"
+                        text += f"{block.numbering.strip()}\t"
                     text += f"{block.paragraph.text.strip()}\n"
                 elif block.table:
                     if block.table.caption:

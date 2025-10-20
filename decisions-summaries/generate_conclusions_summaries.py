@@ -25,7 +25,7 @@ from sqlalchemy.orm import Session, selectinload
 from init_db import engine
 
 from data_models.document_core_representation import Block, DocumentCore
-from data_models.document_organizational_representation import Document
+from data_models.document_organizational_representation import Document, Body
 
 import pandas as pd
 
@@ -36,14 +36,15 @@ if __name__ == "__main__":
     with Session(engine) as session:
         rows = session.execute(
             select(Document)
+            .join(Document.body)
             .options(
                 selectinload(Document.core).selectinload(DocumentCore.blocks).selectinload(Block.paragraph),
                 selectinload(Document.core).selectinload(DocumentCore.blocks).selectinload(Block.table),
             )
             .where(
                 or_(
-                    Document.body.symbol == "SBI",
-                    Document.body.symbol == "SBSTA"
+                    Body.symbol == "SBI",
+                    Body.symbol == "SBSTA"
                 )
             )
         ).scalars().all()
@@ -55,7 +56,7 @@ if __name__ == "__main__":
             for block in blocks:
                 if block.paragraph:
                     if block.numbering:
-                        text += f"{block.numbering.strip}\t"
+                        text += f"{block.numbering.strip()}\t"
                     text += f"{block.paragraph.text.strip()}\n"
                 elif block.table:
                     if block.table.caption:
